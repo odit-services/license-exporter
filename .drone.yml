@@ -1,0 +1,16 @@
+---
+kind: pipeline
+name: release
+
+steps:
+  - name: npm
+    image: plugins/npm
+    settings:
+      token:
+        from_secret: NPM_TOKEN
+      email: info@odit.services
+trigger:
+  branch:
+    - main
+  event:
+    - push
