@@ -2,18 +2,18 @@ const fs = require('fs');
 
 const args = process.argv.slice(2);
 
-function parsePackageInfo(path){
-    const packagecontents = JSON.parse(fs.readFileSync(path, { encoding: 'utf-8' }));
-    packagecontents.dependencies = Object.entries(packagecontents.dependencies || {});
-    packagecontents.devDependencies = Object.entries(packagecontents.devDependencies || {});
-    return packagecontents;
+function parsePackageInfo(path) {
+	const packagecontents = JSON.parse(fs.readFileSync(path, { encoding: 'utf-8' }));
+	packagecontents.dependencies = Object.entries(packagecontents.dependencies || {});
+	packagecontents.devDependencies = Object.entries(packagecontents.devDependencies || {});
+	return packagecontents;
 }
 
-function mergeDependencies(packageInfo){
-    return [].concat(packageInfo.dependencies, packageInfo.devDependencies);
+function mergeDependencies(packageInfo) {
+	return [].concat(packageInfo.dependencies, packageInfo.devDependencies);
 }
 
-function getDependencyLicenseInfo(all_dependencies, recursive){
+function getDependencyLicenseInfo(all_dependencies, recursive) {
 	let all = [];
 
 	all_dependencies.forEach((p) => {
@@ -37,7 +37,7 @@ function getDependencyLicenseInfo(all_dependencies, recursive){
 			licensetext
 		};
 		all.push(info);
-		if(recursive == true){
+		if (recursive == true) {
 			all.push(...getDependencyLicenseInfo(packageinfo.dependencies, true));
 		}
 	});
@@ -46,9 +46,20 @@ function getDependencyLicenseInfo(all_dependencies, recursive){
 const packageInfo = parsePackageInfo(`./package.json`);
 const all = getDependencyLicenseInfo(mergeDependencies(packageInfo), args.includes("--recursive"));
 
-if(args.includes("--pretty")){
-	fs.writeFileSync('./licenses.json', JSON.stringify(all, null, 4));
+if (args.includes("--json")) {
+	if (args.includes("--pretty")) {
+		fs.writeFileSync('./licenses.json', JSON.stringify(all, null, 4));
+	}
+	else {
+		fs.writeFileSync('./licenses.json', JSON.stringify(all));
+	}
 }
-else{
-	fs.writeFileSync('./licenses.json', JSON.stringify(all));
+if (args.includes("--md")) {
+	fs.writeFileSync('./licenses.md', "");
+	all.forEach((p) => {
+		fs.appendFileSync("./licenses.md", `# ${p.name}\n**Author**: ${p.author}\n**Repo**: ${p.repo}\n**License**: ${p.license}\n**Description**: ${p.description}\n## License Text\n${p.licensetext} \n\n`)
+	});
+}
+else {
+	return all;
 }
