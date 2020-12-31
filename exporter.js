@@ -1,6 +1,13 @@
 const fs = require('fs');
 
 const args = process.argv.slice(2);
+if(args.includes("--help")){
+	console.log(`Arguments:
+	--help: View this help page
+	--recursive: Include all dependencies' subdependencies
+	--json: Exports the license information into ./licenses.json as json
+	--md: Exports the license information into ./licenses.md as markdow`);
+}
 
 function parsePackageInfo(path) {
 	const packagecontents = JSON.parse(fs.readFileSync(path, { encoding: 'utf-8' }));
