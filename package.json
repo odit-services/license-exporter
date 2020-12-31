@@ -2,7 +2,7 @@
   "name": "@odit/license-exporter",
   "version": "0.0.1",
   "description": "A simple license crawler",
-  "main": "dist/index.js",
+  "main": "export.js",
   "author": "ODIT.Services",
   "license": "MIT",
   "contributors": [
