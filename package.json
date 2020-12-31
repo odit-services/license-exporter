@@ -1,0 +1,30 @@
+{
+  "name": "@odit/license-exporter",
+  "version": "0.0.1",
+  "description": "A simple license crawler",
+  "main": "dist/index.js",
+  "author": "ODIT.Services",
+  "license": "MIT",
+  "contributors": [
+    {
+      "name": "Philipp Dormann",
+      "email": "philipp@philippdormann.de",
+      "url": "https://philippdormann.de"
+    },
+    {
+      "name": "Nicolai Ort",
+      "email": "info@nicolai-ort.com",
+      "url": "https://nicolai-ort.com"
+    }
+  ],
+  "keywords": [
+    "license"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://git.odit.services/odit/license-exporter"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
