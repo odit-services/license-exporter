@@ -6,7 +6,7 @@ if(args.includes("--help")){
 	--help: View this help page
 	--recursive: Include all dependencies' subdependencies
 	--json: Exports the license information into ./licenses.json as json
-	--md: Exports the license information into ./licenses.md as markdow`);
+	--md: Exports the license information into ./licenses.md as markdown`);
 }
 
 function parsePackageInfo(path) {
