@@ -46,4 +46,9 @@ function getDependencyLicenseInfo(all_dependencies, recursive){
 const packageInfo = parsePackageInfo(`./package.json`);
 const all = getDependencyLicenseInfo(mergeDependencies(packageInfo), args.includes("--recursive"));
 
-fs.writeFileSync('./licenses.json', JSON.stringify(all));
+if(args.includes("--pretty")){
+	fs.writeFileSync('./licenses.json', JSON.stringify(all, null, 4));
+}
+else{
+	fs.writeFileSync('./licenses.json', JSON.stringify(all));
+}
