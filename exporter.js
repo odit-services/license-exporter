@@ -1,13 +1,23 @@
 const fs = require('fs');
-const packagecontents = JSON.parse(fs.readFileSync('./package.json'));
-//
-packagecontents.dependencies = Object.entries(packagecontents.dependencies);
-packagecontents.devDependencies = Object.entries(packagecontents.devDependencies);
-const all_dependencies = [].concat(packagecontents.dependencies, packagecontents.devDependencies);
-let all = [];
-(() => {
+
+const args = process.argv.slice(2);
+
+function parsePackageInfo(path){
+    const packagecontents = JSON.parse(fs.readFileSync(path, { encoding: 'utf-8' }));
+    packagecontents.dependencies = Object.entries(packagecontents.dependencies || {});
+    packagecontents.devDependencies = Object.entries(packagecontents.devDependencies || {});
+    return packagecontents;
+}
+
+function mergeDependencies(packageInfo){
+    return [].concat(packageInfo.dependencies, packageInfo.devDependencies);
+}
+
+function getDependencyLicenseInfo(all_dependencies, recursive){
+	let all = [];
+
 	all_dependencies.forEach((p) => {
-		const packageinfo = JSON.parse(fs.readFileSync(`./node_modules/${p[0]}/package.json`, { encoding: 'utf-8' }));
+		const packageinfo = parsePackageInfo(`./node_modules/${p[0]}/package.json`);
 		let licensetext = '';
 		if (fs.existsSync(`./node_modules/${p[0]}/LICENSE.md`)) {
 			licensetext = fs.readFileSync(`./node_modules/${p[0]}/LICENSE.md`, { encoding: 'utf-8' });
@@ -27,6 +37,13 @@ let all = [];
 			licensetext
 		};
 		all.push(info);
+		if(recursive == true){
+			all.push(...getDependencyLicenseInfo(packageinfo.dependencies, true));
+		}
 	});
-	fs.writeFileSync('./licenses.json', JSON.stringify(all));
-})();
+	return all;
+}
+const packageInfo = parsePackageInfo(`./package.json`);
+const all = getDependencyLicenseInfo(mergeDependencies(packageInfo), args.includes("--recursive"));
+
+fs.writeFileSync('./licenses.json', JSON.stringify(all));
