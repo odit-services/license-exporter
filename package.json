@@ -1,8 +1,9 @@
 {
   "name": "@odit/license-exporter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A simple license crawler",
   "main": "./export.js",
+  "bin": "./export.js",
   "author": "ODIT.Services",
   "license": "MIT",
   "contributors": [
