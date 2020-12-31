@@ -1,28 +1,32 @@
 {
-  "name": "@odit/license-exporter",
-  "version": "0.0.3",
-  "description": "A simple license crawler",
-  "main": "./export.js",
-  "bin": "./export.js",
-  "author": "ODIT.Services",
-  "license": "MIT",
-  "contributors": [
-    {
-      "name": "Philipp Dormann",
-      "email": "philipp@philippdormann.de",
-      "url": "https://philippdormann.de"
-    },
-    {
-      "name": "Nicolai Ort",
-      "email": "info@nicolai-ort.com",
-      "url": "https://nicolai-ort.com"
-    }
-  ],
-  "keywords": [
-    "license"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://git.odit.services/odit/license-exporter"
-  }
+	"name": "@odit/license-exporter",
+	"version": "0.0.5",
+	"description": "A simple license crawler",
+	"keywords": [ "license", "ODIT.Services", "cli" ],
+	"repository": {
+		"type": "git",
+		"url": "https://git.odit.services/odit/license-exporter"
+	},
+	"author": "ODIT.Services",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"contributors": [
+		{
+			"name": "Philipp Dormann",
+			"email": "philipp@philippdormann.de",
+			"url": "https://philippdormann.de"
+		},
+		{
+			"name": "Nicolai Ort",
+			"email": "info@nicolai-ort.com",
+			"url": "https://nicolai-ort.com"
+		}
+	],
+	"main": "exporter.js",
+	"bin": {
+		"licenseexport": "./bin/exporter.js"
+	},
+	"files": [ "bin" ]
 }

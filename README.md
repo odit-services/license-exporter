@@ -13,13 +13,13 @@ yarn add @odit/license-exporter
 npm i @odit/license-exporter
 ```
 
-## Use
+## CLI Usage
 
-Export only your dependencies to json: `license-exporter --json`
-Export all dependencies to json: `license-exporter --json --recursive`
+Export only your dependencies to json: `licenseexporter --json`
+Export all dependencies to json: `licenseexporter --json --recursive`
 
-Export only your dependencies to markdown: `license-exporter --md`
-Export all dependencies to markdown: `license-exporter --md --recursive`
+Export only your dependencies to markdown: `licenseexporter --md`
+Export all dependencies to markdown: `licenseexporter --md --recursive`
 
 ## Arguments
 Arg | Description
