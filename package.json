@@ -1,8 +1,8 @@
 {
   "name": "@odit/license-exporter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple license crawler",
-  "main": "export.js",
+  "main": "./export.js",
   "author": "ODIT.Services",
   "license": "MIT",
   "contributors": [
@@ -23,8 +23,5 @@
   "repository": {
     "type": "git",
     "url": "https://git.odit.services/odit/license-exporter"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
