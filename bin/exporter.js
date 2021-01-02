@@ -2,15 +2,39 @@
 'use strict';
 
 const fs = require('fs');
+const yargs = require('yargs');
 
-const args = process.argv.slice(2);
-if (args.includes('--help')) {
-	console.log(`Arguments:
-	--help: View this help page
-	--recursive: Include all dependencies' subdependencies
-	--json: Exports the license information into ./licenses.json as json
-	--md: Exports the license information into ./licenses.md as markdown`);
-}
+const args = yargs
+    .option('json', {
+        alias: 'j',
+        description: 'Exports the license information into ./licenses.json as json.',
+        type: 'boolean',
+    })
+	.option('pretty', {
+        alias: 'p',
+        description: 'Prettify the json output.',
+        type: 'boolean',
+    })
+	.option('markdown', {
+        alias: 'm',
+        description: 'Exports the license information into ./licenses.md as markdown.',
+        type: 'boolean',
+    })
+	.option('recursive', {
+        alias: 'r',
+        description: 'Include all of the dependencies\' subdependencies.',
+        type: 'boolean',
+    })
+	.option('output', {
+		alias : 'o',
+		describe: 'Output folder for the exports. (Default: Current folder)',
+		type: 'string',
+		default: '.'
+	})
+    .help()
+    .alias('help', 'h')
+	.alias('v', 'version')
+    .argv;
 
 function parsePackageInfo(path) {
 	const packagecontents = JSON.parse(fs.readFileSync(path, { encoding: 'utf-8' }));
@@ -54,20 +78,20 @@ function getDependencyLicenseInfo(all_dependencies, recursive) {
 	return all;
 }
 const packageInfo = parsePackageInfo(`./package.json`);
-const all = getDependencyLicenseInfo(mergeDependencies(packageInfo), args.includes('--recursive'));
+const all = getDependencyLicenseInfo(mergeDependencies(packageInfo), args.recursive);
 
-if (args.includes('--json')) {
-	if (args.includes('--pretty')) {
-		fs.writeFileSync('./licenses.json', JSON.stringify(all, null, 4));
+if (args.json) {
+	if (args.pretty) {
+		fs.writeFileSync((args.output+'/licenses.json'), JSON.stringify(all, null, 4));
 	} else {
-		fs.writeFileSync('./licenses.json', JSON.stringify(all));
+		fs.writeFileSync((args.output+'/licenses.json'), JSON.stringify(all));
 	}
 }
-if (args.includes('--md')) {
-	fs.writeFileSync('./licenses.md', '');
+if (args.markdown) {
+	fs.writeFileSync((args.output+'/licenses.md'), '');
 	all.forEach((p) => {
 		fs.appendFileSync(
-			'./licenses.md',
+			(args.output+'/licenses.md'),
 			`# ${p.name}\n**Author**: ${p.author}\n**Repo**: ${p.repo}\n**License**: ${p.license}\n**Description**: ${p.description}\n## License Text\n${p.licensetext} \n\n`
 		);
 	});

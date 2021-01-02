@@ -1,8 +1,12 @@
 {
 	"name": "@odit/license-exporter",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "A simple license crawler",
-	"keywords": [ "license", "ODIT.Services", "cli" ],
+	"keywords": [
+		"license",
+		"ODIT.Services",
+		"cli"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://git.odit.services/odit/license-exporter"
@@ -26,7 +30,16 @@
 	],
 	"main": "exporter.js",
 	"bin": {
-		"license-exporter": "./bin/exporter.js"
+		"license-exporter": "bin/exporter.js"
 	},
-	"files": [ "bin", "exporter.js", "README.md", "package.json", "LICENSE" ]
+	"files": [
+		"bin",
+		"exporter.js",
+		"README.md",
+		"package.json",
+		"LICENSE"
+	],
+	"dependencies": {
+		"yargs": "^16.2.0"
+	}
 }
