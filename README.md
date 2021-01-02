@@ -3,7 +3,8 @@
 [![Build Status](https://ci.odit.services/api/badges/odit/license-exporter/status.svg?ref=refs/heads/main)](https://ci.odit.services/odit/license-exporter)
 
 A simple license exporter that crawls your package.json and provides you with information about your dependencies' licenses.
-You can export this information into json and markdown.
+You can export this information into json(even prettyfied) and markdown.
+We use this in our open source projects to credit the awesome work of other open source contributors.
 
 ## Install
 Via yarn/npm:
@@ -21,10 +22,14 @@ Export all dependencies to json: `licenseexporter --json --recursive`
 Export only your dependencies to markdown: `licenseexporter --md`
 Export all dependencies to markdown: `licenseexporter --md --recursive`
 
-## Arguments
-Arg | Description
--|-
-`--help` | View the help dialog
-`--recursive`| Include all dependencies' subdependencies
-`--json` | Exports the license information into ./licenses.json as json
-`--md` | Exports the license information into ./licenses.md as markdow
+## Options
+Arg | Description | Type | Default
+- | - | - | -
+-j, --json | Exports the license information into ./licenses.json as json. | flag/[boolean] | N/A
+-p, --pretty | Prettify the json output.|flag/[boolean] | N/A
+-m, --markdown | Exports the license information into ./licenses.md as markdown. | flag/[boolean] | N/A
+-r, --recursive | Include all of the dependencies' subdependencies. | flag/[boolean] | N/A
+-o, --output | Output folder for the exports. | [string] | Current folder
+-i, --input | Path to the input folder containing your package.json and node_modules | [string] | Current folder
+-h, --help | Show help | flag/[boolean] | N/A
+-v, --version | Show version number | flag/[boolean] | N/A
