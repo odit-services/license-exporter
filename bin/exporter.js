@@ -27,7 +27,13 @@ const args = yargs
     })
 	.option('output', {
 		alias : 'o',
-		describe: 'Output folder for the exports. (Default: Current folder)',
+		describe: 'Output folder for the exports (Default: Current folder).',
+		type: 'string',
+		default: '.'
+	})
+	.option('input', {
+		alias : 'i',
+		describe: 'Path to the input folder containing your package.json and node_modules (Default: Current folder).',
 		type: 'string',
 		default: '.'
 	})
@@ -51,16 +57,16 @@ function getDependencyLicenseInfo(all_dependencies, recursive) {
 	let all = [];
 
 	all_dependencies.forEach((p) => {
-		const packageinfo = parsePackageInfo(`./node_modules/${p[0]}/package.json`);
+		const packageinfo = parsePackageInfo(`${args.input}/node_modules/${p[0]}/package.json`);
 		let licensetext = '';
-		if (fs.existsSync(`./node_modules/${p[0]}/LICENSE.md`)) {
-			licensetext = fs.readFileSync(`./node_modules/${p[0]}/LICENSE.md`, { encoding: 'utf-8' });
+		if (fs.existsSync(`${args.input}/node_modules/${p[0]}/LICENSE.md`)) {
+			licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE.md`, { encoding: 'utf-8' });
 		}
-		if (fs.existsSync(`./node_modules/${p[0]}/LICENSE`)) {
-			licensetext = fs.readFileSync(`./node_modules/${p[0]}/LICENSE`, { encoding: 'utf-8' });
+		if (fs.existsSync(`${args.input}/node_modules/${p[0]}/LICENSE`)) {
+			licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE`, { encoding: 'utf-8' });
 		}
-		if (fs.existsSync(`./node_modules/${p[0]}/LICENSE.txt`)) {
-			licensetext = fs.readFileSync(`./node_modules/${p[0]}/LICENSE.txt`, { encoding: 'utf-8' });
+		if (fs.existsSync(`${args.input}/node_modules/${p[0]}/LICENSE.txt`)) {
+			licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE.txt`, { encoding: 'utf-8' });
 		}
 		const info = {
 			author: packageinfo.author,
@@ -77,7 +83,7 @@ function getDependencyLicenseInfo(all_dependencies, recursive) {
 	});
 	return all;
 }
-const packageInfo = parsePackageInfo(`./package.json`);
+const packageInfo = parsePackageInfo(`${args.input}/package.json`);
 const all = getDependencyLicenseInfo(mergeDependencies(packageInfo), args.recursive);
 
 if (args.json) {
