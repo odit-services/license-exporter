@@ -74,6 +74,7 @@ function getDependencyLicenseInfo(all_dependencies, recursive) {
 			description: packageinfo.description,
 			name: packageinfo.name,
 			license: packageinfo.license,
+			version: packageinfo.version,
 			licensetext
 		};
 		all.push(info);
