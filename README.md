@@ -24,12 +24,12 @@ Export all dependencies to markdown: `licenseexporter --md --recursive`
 
 ## Options
 Arg | Description | Type | Default
-- | - | - | -
--j, --json | Exports the license information into ./licenses.json as json. | flag/[boolean] | N/A
--p, --pretty | Prettify the json output.|flag/[boolean] | N/A
--m, --markdown | Exports the license information into ./licenses.md as markdown. | flag/[boolean] | N/A
--r, --recursive | Include all of the dependencies' subdependencies. | flag/[boolean] | N/A
--o, --output | Output folder for the exports. | [string] | Current folder
--i, --input | Path to the input folder containing your package.json and node_modules | [string] | Current folder
--h, --help | Show help | flag/[boolean] | N/A
--v, --version | Show version number | flag/[boolean] | N/A
+| - | - | - | -
+\-j, --json | Exports the license information into ./licenses.json as json. | flag/[boolean] | N/A
+\-p, --pretty | Prettify the json output.|flag/[boolean] | N/A
+\-m, --markdown | Exports the license information into ./licenses.md as markdown. | flag/[boolean] | N/A
+\-r, --recursive | Include all of the dependencies' subdependencies. | flag/[boolean] | N/A
+\-o, --output | Output folder for the exports. | [string] | Current folder
+\-i, --input | Path to the input folder containing your package.json and node_modules | [string] | Current folder
+\-h, --help | Show help | flag/[boolean] | N/A
+\-v, --version | Show version number | flag/[boolean] | N/A
