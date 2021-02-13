@@ -99,7 +99,7 @@ if (args.markdown) {
 	all.forEach((p) => {
 		fs.appendFileSync(
 			(args.output+'/licenses.md'),
-			`# ${p.name}\n**Author**: ${p.author}\n**Repo**: ${p.repo}\n**License**: ${p.license}\n**Description**: ${p.description}\n## License Text\n${p.licensetext} \n\n`
+			`# ${p.name}\n**Author**: ${p.author}\n**Repo**: ${p.repo?.url || p.repo}\n**License**: ${p.license}\n**Description**: ${p.description}\n## License Text\n${p.licensetext} \n\n`
 		);
 	});
 } else {
