@@ -70,7 +70,7 @@ function getDependencyLicenseInfo(all_dependencies, recursive) {
 		}
 		const info = {
 			author: packageinfo.author,
-			repo: packageinfo.repository || packageinfo.repository.url,
+			repo: packageinfo.repository || packageinfo.repository?.url,
 			description: packageinfo.description,
 			name: packageinfo.name,
 			license: packageinfo.license,
