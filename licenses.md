@@ -1,6 +1,6 @@
 # yargs
-**Author**: undefined
-**Repo**: [object Object]
+**Author**: ?
+**Repo**: https://github.com/yargs/yargs
 **License**: MIT
 **Description**: yargs the modern, pirate-themed, successor to optimist.
 ## License Text

@@ -6,3 +6,4 @@ node_modules
 .gitignore
 lib
 package-lock.json
+changelog.md
