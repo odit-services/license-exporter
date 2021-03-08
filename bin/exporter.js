@@ -26,13 +26,13 @@ const args = yargs
         type: 'boolean',
     })
 	.option('output', {
-		alias : 'o',
+		alias: 'o',
 		describe: 'Output folder for the exports (Default: Current folder).',
 		type: 'string',
 		default: '.'
 	})
 	.option('input', {
-		alias : 'i',
+		alias: 'i',
 		describe: 'Path to the input folder containing your package.json and node_modules (Default: Current folder).',
 		type: 'string',
 		default: '.'
@@ -69,14 +69,42 @@ function getDependencyLicenseInfo(all_dependencies, recursive) {
 			licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE.txt`, { encoding: 'utf-8' });
 		}
 		const info = {
-			author: packageinfo.author,
+			author: "?",
 			repo: packageinfo.repository || packageinfo.repository?.url,
-			description: packageinfo.description,
+			description: packageinfo.description || "",
 			name: packageinfo.name,
 			license: packageinfo.license,
 			version: packageinfo.version,
 			licensetext
 		};
+		if (info.repo) {
+			if (typeof info.repo === "object") {
+				info.repo.url = info.repo.url.replace(/git\:\/\/github.com\//gi, "https://github.com");
+				info.repo.url = info.repo.url.replace(/git\+https:\/\/github.com\//gi, "https://github.com/");
+			}
+			if (typeof info.repo === "string") {
+				info.repo = {
+					url: info.repo
+				};
+			}
+			info.repo.url = info.repo.url.replace(/github:/gi, "https://github.com/");
+			if (info.repo.url.includes("github.com")) {
+				info.repo.url = info.repo.url.replace(/\.git/gi, "");
+			}
+		}
+		if (packageinfo.author) {
+			if (typeof packageinfo.author === "string") info.author = packageinfo.author;
+			if (packageinfo.author.name) {
+				info.author = packageinfo.author.name;
+			}
+		}
+		if (packageinfo.homepage && packageinfo.repository) {
+			if (typeof packageinfo.repository === "string") {
+				if (packageinfo.homepage.toLowerCase().includes(packageinfo.repository.toLowerCase())) {
+					info.repo = packageinfo.homepage;
+				}
+			}
+		}
 		all.push(info);
 		if (recursive == true) {
 			all.push(...getDependencyLicenseInfo(packageinfo.dependencies, true));
