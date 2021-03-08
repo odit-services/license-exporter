@@ -11,7 +11,11 @@
 		"type": "git",
 		"url": "https://git.odit.services/odit/license-exporter"
 	},
-	"author": "ODIT.Services",
+	"author": {
+		"name": "ODIT.Services",
+		"email": "info@odit.services",
+		"url": "https://odit.services"
+	},
 	"license": "MIT",
 	"publishConfig": {
 		"access": "public"
