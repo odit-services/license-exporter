@@ -1,6 +1,6 @@
 # ODIT.Services - License Exporter
 
-[![Node.js Package](https://github.com/odit-services/license-exporter/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/odit-services/license-exporter/actions/workflows/npm-publish.yml)
+[![Node.js Package](https://github.com/odit-services/license-exporter/actions/workflows/npm-publish.yml/badge.svg?branch=v0.0.11)](https://github.com/odit-services/license-exporter/actions/workflows/npm-publish.yml)
 
 A simple license exporter that crawls your package.json and provides you with information about your dependencies' licenses.
 You can export this information into json(even prettyfied) and markdown.
