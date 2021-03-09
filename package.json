@@ -1,6 +1,6 @@
 {
 	"name": "@odit/license-exporter",
-	"version": "0.0.10",
+	"version": "0.0.11",
 	"description": "A simple license crawler for crediting open source work",
 	"keywords": [
 		"license",
@@ -11,7 +11,11 @@
 		"type": "git",
 		"url": "https://git.odit.services/odit/license-exporter"
 	},
-	"author": "ODIT.Services",
+	"author": {
+		"name": "ODIT.Services",
+		"email": "info@odit.services",
+		"url": "https://odit.services"
+	},
 	"license": "MIT",
 	"publishConfig": {
 		"access": "public"
