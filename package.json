@@ -1,6 +1,6 @@
 {
 	"name": "@odit/license-exporter",
-	"version": "0.0.11",
+	"version": "0.0.12",
 	"description": "A simple license crawler for crediting open source work",
 	"keywords": [
 		"license",
