@@ -1,6 +1,6 @@
 {
 	"name": "@odit/license-exporter",
-	"version": "0.0.11",
+	"version": "0.0.12",
 	"description": "A simple license crawler for crediting open source work",
 	"keywords": [
 		"license",
@@ -44,6 +44,6 @@
 		"LICENSE"
 	],
 	"dependencies": {
-		"yargs": "^16.2.0"
+		"yargs": "^17.3.1"
 	}
 }

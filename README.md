@@ -1,5 +1,9 @@
 # ODIT.Services - License Exporter
 
+![npm](https://img.shields.io/npm/dt/@odit/license-exporter?logo=npm&style=for-the-badge)
+![NPM](https://img.shields.io/npm/l/@odit/license-exporter?style=for-the-badge)
+![npm](https://img.shields.io/npm/v/@odit/license-exporter?color=blue&label=Version&logo=npm&style=for-the-badge)
+[![Build Status](https://ci.odit.services/api/badges/odit/license-exporter/status.svg?ref=refs/heads/main)](https://ci.odit.services/odit/license-exporter)
 [![Node.js Package](https://github.com/odit-services/license-exporter/actions/workflows/npm-publish.yml/badge.svg?branch=v0.0.11)](https://github.com/odit-services/license-exporter/actions/workflows/npm-publish.yml)
 
 A simple license exporter that crawls your package.json and provides you with information about your dependencies' licenses.
