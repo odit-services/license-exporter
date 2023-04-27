@@ -110,15 +110,18 @@ function extractPackageInfo(packageinfo, p){
 	return info;
 }
 
-function getDependencyLicenseInfo(all_dependencies, recursive, depth) {
+function getDependencyLicenseInfo(all_dependencies, recursive, depth, alreadyParsed = []) {
 	let all = [];
 
 	all_dependencies.forEach((p) => {
 		const packageinfo = parsePackageInfo(`${args.input}/node_modules/${p[0]}/package.json`);
-		const info = extractPackageInfo(packageinfo, p)
-		all.push(info);
-		if (recursive == true && depth > 0) {
-			all.push(...getDependencyLicenseInfo(packageinfo.dependencies, recursive, depth - 1));
+		if(!alreadyParsed.includes(packageinfo.name)){
+			const info = extractPackageInfo(packageinfo, p)
+			all.push(info);
+			alreadyParsed.push(packageinfo.name)
+			if (recursive == true && depth > 0) {
+				all.push(...getDependencyLicenseInfo(packageinfo.dependencies, recursive, depth - 1, alreadyParsed));
+			}
 		}
 	});
 	return all;
