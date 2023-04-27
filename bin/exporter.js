@@ -27,8 +27,8 @@ const args = yargs
 	})
 	.option('depth', {
 		alias: 'd',
-		description: 'Resolve the dependencies of dependencies multiple levels down (defaults to 1)',
-		default: 1,
+		description: 'Resolve the dependencies of dependencies multiple levels down (defaults to Infinity)',
+		default: Infinity,
 		type: 'number',
 	})
 	.option('output', {
@@ -59,7 +59,7 @@ function mergeDependencies(packageInfo) {
 	return [].concat(packageInfo.dependencies, packageInfo.devDependencies);
 }
 
-function extractPackageInfo(packageinfo, p){
+function extractPackageInfo(packageinfo, p) {
 	let licensetext = '';
 	if (fs.existsSync(`${args.input}/node_modules/${p[0]}/LICENSE.md`)) {
 		licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE.md`, { encoding: 'utf-8' });
@@ -115,7 +115,7 @@ function getDependencyLicenseInfo(all_dependencies, recursive, depth, alreadyPar
 
 	all_dependencies.forEach((p) => {
 		const packageinfo = parsePackageInfo(`${args.input}/node_modules/${p[0]}/package.json`);
-		if(!alreadyParsed.includes(packageinfo.name)){
+		if (!alreadyParsed.includes(packageinfo.name)) {
 			const info = extractPackageInfo(packageinfo, p)
 			all.push(info);
 			alreadyParsed.push(packageinfo.name)
@@ -127,7 +127,12 @@ function getDependencyLicenseInfo(all_dependencies, recursive, depth, alreadyPar
 	return all;
 }
 const packageInfo = parsePackageInfo(`${args.input}/package.json`);
-const all = getDependencyLicenseInfo(mergeDependencies(packageInfo), args.recursive, parseInt(args.depth));
+
+let depth = 0;
+if (args.depth == Infinity) { depth = Infinity; }
+else { depth = parse(args.depth) }
+
+const all = getDependencyLicenseInfo(mergeDependencies(packageInfo), args.recursive, depth);
 
 if (args.json) {
 	if (args.pretty) {
