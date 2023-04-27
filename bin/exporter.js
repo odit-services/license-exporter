@@ -59,58 +59,63 @@ function mergeDependencies(packageInfo) {
 	return [].concat(packageInfo.dependencies, packageInfo.devDependencies);
 }
 
+function extractPackageInfo(packageinfo, p){
+	let licensetext = '';
+	if (fs.existsSync(`${args.input}/node_modules/${p[0]}/LICENSE.md`)) {
+		licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE.md`, { encoding: 'utf-8' });
+	}
+	if (fs.existsSync(`${args.input}/node_modules/${p[0]}/LICENSE`)) {
+		licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE`, { encoding: 'utf-8' });
+	}
+	if (fs.existsSync(`${args.input}/node_modules/${p[0]}/LICENSE.txt`)) {
+		licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE.txt`, { encoding: 'utf-8' });
+	}
+	const info = {
+		author: "?",
+		repo: packageinfo.repository || packageinfo.repository?.url,
+		description: packageinfo.description || "",
+		name: packageinfo.name,
+		license: packageinfo.license,
+		version: packageinfo.version,
+		licensetext
+	};
+	if (info.repo) {
+		if (typeof info.repo === "object") {
+			info.repo.url = info.repo.url.replace(/git\:\/\/github.com\//gi, "https://github.com");
+			info.repo.url = info.repo.url.replace(/git\+https:\/\/github.com\//gi, "https://github.com/");
+		}
+		if (typeof info.repo === "string") {
+			info.repo = {
+				url: info.repo
+			};
+		}
+		info.repo.url = info.repo.url.replace(/github:/gi, "https://github.com/");
+		if (info.repo.url.includes("github.com")) {
+			info.repo.url = info.repo.url.replace(/\.git/gi, "");
+		}
+	}
+	if (packageinfo.author) {
+		if (typeof packageinfo.author === "string") info.author = packageinfo.author;
+		if (packageinfo.author.name) {
+			info.author = packageinfo.author.name;
+		}
+	}
+	if (packageinfo.homepage && packageinfo.repository) {
+		if (typeof packageinfo.repository === "string") {
+			if (packageinfo.homepage.toLowerCase().includes(packageinfo.repository.toLowerCase())) {
+				info.repo = packageinfo.homepage;
+			}
+		}
+	}
+	return info;
+}
+
 function getDependencyLicenseInfo(all_dependencies, recursive, depth) {
 	let all = [];
 
 	all_dependencies.forEach((p) => {
 		const packageinfo = parsePackageInfo(`${args.input}/node_modules/${p[0]}/package.json`);
-		let licensetext = '';
-		if (fs.existsSync(`${args.input}/node_modules/${p[0]}/LICENSE.md`)) {
-			licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE.md`, { encoding: 'utf-8' });
-		}
-		if (fs.existsSync(`${args.input}/node_modules/${p[0]}/LICENSE`)) {
-			licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE`, { encoding: 'utf-8' });
-		}
-		if (fs.existsSync(`${args.input}/node_modules/${p[0]}/LICENSE.txt`)) {
-			licensetext = fs.readFileSync(`${args.input}/node_modules/${p[0]}/LICENSE.txt`, { encoding: 'utf-8' });
-		}
-		const info = {
-			author: "?",
-			repo: packageinfo.repository || packageinfo.repository?.url,
-			description: packageinfo.description || "",
-			name: packageinfo.name,
-			license: packageinfo.license,
-			version: packageinfo.version,
-			licensetext
-		};
-		if (info.repo) {
-			if (typeof info.repo === "object") {
-				info.repo.url = info.repo.url.replace(/git\:\/\/github.com\//gi, "https://github.com");
-				info.repo.url = info.repo.url.replace(/git\+https:\/\/github.com\//gi, "https://github.com/");
-			}
-			if (typeof info.repo === "string") {
-				info.repo = {
-					url: info.repo
-				};
-			}
-			info.repo.url = info.repo.url.replace(/github:/gi, "https://github.com/");
-			if (info.repo.url.includes("github.com")) {
-				info.repo.url = info.repo.url.replace(/\.git/gi, "");
-			}
-		}
-		if (packageinfo.author) {
-			if (typeof packageinfo.author === "string") info.author = packageinfo.author;
-			if (packageinfo.author.name) {
-				info.author = packageinfo.author.name;
-			}
-		}
-		if (packageinfo.homepage && packageinfo.repository) {
-			if (typeof packageinfo.repository === "string") {
-				if (packageinfo.homepage.toLowerCase().includes(packageinfo.repository.toLowerCase())) {
-					info.repo = packageinfo.homepage;
-				}
-			}
-		}
+		const info = extractPackageInfo(packageinfo, p)
 		all.push(info);
 		if (recursive == true && depth > 0) {
 			all.push(...getDependencyLicenseInfo(packageinfo.dependencies, recursive, depth - 1));
