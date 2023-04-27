@@ -33,6 +33,7 @@ Arg | Description | Type | Default
 \-p, --pretty | Prettify the json output.|flag/[boolean] | N/A
 \-m, --markdown | Exports the license information into ./licenses.md as markdown. | flag/[boolean] | N/A
 \-r, --recursive | Include all of the dependencies' subdependencies. | flag/[boolean] | N/A
+\-d, --depth | The depth for recursive subdependency resolution (1 = dependencies and subsependencies). Has to be used with --recursive | number | 1
 \-o, --output | Output folder for the exports. | [string] | Current folder
 \-i, --input | Path to the input folder containing your package.json and node_modules | [string] | Current folder
 \-h, --help | Show help | flag/[boolean] | N/A
