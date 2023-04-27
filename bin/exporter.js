@@ -5,26 +5,32 @@ const fs = require('fs');
 const yargs = require('yargs');
 
 const args = yargs
-    .option('json', {
-        alias: 'j',
-        description: 'Exports the license information into ./licenses.json as json.',
-        type: 'boolean',
-    })
+	.option('json', {
+		alias: 'j',
+		description: 'Exports the license information into ./licenses.json as json.',
+		type: 'boolean',
+	})
 	.option('pretty', {
-        alias: 'p',
-        description: 'Prettify the json output.',
-        type: 'boolean',
-    })
+		alias: 'p',
+		description: 'Prettify the json output.',
+		type: 'boolean',
+	})
 	.option('markdown', {
-        alias: 'm',
-        description: 'Exports the license information into ./licenses.md as markdown.',
-        type: 'boolean',
-    })
+		alias: 'm',
+		description: 'Exports the license information into ./licenses.md as markdown.',
+		type: 'boolean',
+	})
 	.option('recursive', {
-        alias: 'r',
-        description: 'Include all of the dependencies\' subdependencies.',
-        type: 'boolean',
-    })
+		alias: 'r',
+		description: 'Include all of the dependencies\' subdependencies.',
+		type: 'boolean',
+	})
+	.option('depth', {
+		alias: 'd',
+		description: 'Resolve the dependencies of dependencies multiple levels down (defaults to 1)',
+		default: 1,
+		type: 'number',
+	})
 	.option('output', {
 		alias: 'o',
 		describe: 'Output folder for the exports (Default: Current folder).',
@@ -37,10 +43,10 @@ const args = yargs
 		type: 'string',
 		default: '.'
 	})
-    .help()
-    .alias('help', 'h')
+	.help()
+	.alias('help', 'h')
 	.alias('v', 'version')
-    .argv;
+	.argv;
 
 function parsePackageInfo(path) {
 	const packagecontents = JSON.parse(fs.readFileSync(path, { encoding: 'utf-8' }));
@@ -53,7 +59,7 @@ function mergeDependencies(packageInfo) {
 	return [].concat(packageInfo.dependencies, packageInfo.devDependencies);
 }
 
-function getDependencyLicenseInfo(all_dependencies, recursive) {
+function getDependencyLicenseInfo(all_dependencies, recursive, depth) {
 	let all = [];
 
 	all_dependencies.forEach((p) => {
@@ -106,27 +112,27 @@ function getDependencyLicenseInfo(all_dependencies, recursive) {
 			}
 		}
 		all.push(info);
-		if (recursive == true) {
-			all.push(...getDependencyLicenseInfo(packageinfo.dependencies, true));
+		if (recursive == true && depth > 0) {
+			all.push(...getDependencyLicenseInfo(packageinfo.dependencies, recursive, depth - 1));
 		}
 	});
 	return all;
 }
 const packageInfo = parsePackageInfo(`${args.input}/package.json`);
-const all = getDependencyLicenseInfo(mergeDependencies(packageInfo), args.recursive);
+const all = getDependencyLicenseInfo(mergeDependencies(packageInfo), args.recursive, parseInt(args.depth));
 
 if (args.json) {
 	if (args.pretty) {
-		fs.writeFileSync((args.output+'/licenses.json'), JSON.stringify(all, null, 4));
+		fs.writeFileSync((args.output + '/licenses.json'), JSON.stringify(all, null, 4));
 	} else {
-		fs.writeFileSync((args.output+'/licenses.json'), JSON.stringify(all));
+		fs.writeFileSync((args.output + '/licenses.json'), JSON.stringify(all));
 	}
 }
 if (args.markdown) {
-	fs.writeFileSync((args.output+'/licenses.md'), '');
+	fs.writeFileSync((args.output + '/licenses.md'), '');
 	all.forEach((p) => {
 		fs.appendFileSync(
-			(args.output+'/licenses.md'),
+			(args.output + '/licenses.md'),
 			`# ${p.name}\n**Author**: ${p.author}\n**Repo**: ${p.repo?.url || p.repo}\n**License**: ${p.license}\n**Description**: ${p.description}\n## License Text\n${p.licensetext} \n\n`
 		);
 	});
